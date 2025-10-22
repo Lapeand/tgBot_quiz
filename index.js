@@ -17,18 +17,22 @@ async function startBot() {
     // Создание бота
     const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true});
 
-    //Импортирую команды
+    //Импортирую команды для пользователей
     require('./bot/commands/start')(bot, pool);
     require('./bot/commands/help')(bot);
     require('./bot/commands/quiz')(bot, pool);
+
+    //Импортирую команды для админа
+    require('./bot/commands/add_question')(bot);
+    require('./bot/commands/cancel')(bot);
     
     //Импортирую обработчики
     require('./bot/handlers/answerHandler')(bot, pool);
+    require('./bot/handlers/answerMessage')(bot, pool);
     
-    
-    // Другие фичи/вспомогательные темки
-    require('./bot/otherFeature/admin'); // возможно добавить
-    require('./bot/otherFeature/userState'); // возможно добавить
+    //Импортирую другие фичи/вспомогательные вещи
+    require('./bot/otherFeature/admin'); //потом проверить надо ли добавить (bot)
+    require('./bot/otherFeature/userState'); //потом проверить надо ли добавить (bot)
     
     //Сообщение о запуске
     console.log('Бот запущен...');

@@ -45,7 +45,7 @@ module.exports = (bot, pool) =>  {
           sendContinueOptions(bot, chatId)
         }
       } catch (error){
-        console.log('Ошибка при обработке ответа пользователя: ', error);
+        console.log('Произошла ошибка в файле answerHandler.js: ', error);
         return bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего ответа.');
       }
     }

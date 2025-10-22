@@ -22,7 +22,7 @@ module.exports = (bot, pool) => {
       }
       
     } catch(error){
-      console.error('Ошибка при вводе команды /start: ', error);
+      console.error('Ошибка при вводе команды start.js: ', error);
       bot.sendMessage(chatId, 'Произошла ошибка при регистрации. Попробуйте еще раз.')
     }
   })

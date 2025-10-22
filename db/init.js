@@ -22,7 +22,7 @@ async function initDatabase() {
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS questions (
-      id SERIAL PRIMARY KEY,
+      id SERIAL PRIMARY KEY,  
       question_text TEXT NOT NULL,
       options JSON NOT NULL,
       answer TEXT NOT NULL
@@ -41,7 +41,7 @@ async function initDatabase() {
       `)
 
   } catch(error){
-    console.error('Произошла ошибка: ', error)
+    console.error('Произошла ошибка инициализации баз даннах: ', error)
   } finally{
     await client.release();
     console.log('Клиент возвращен')

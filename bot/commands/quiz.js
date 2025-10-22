@@ -53,7 +53,7 @@ async function getQuestion(bot, pool, chatId, userId){
         bot.sendMessage(chatId, questionText, optionsButtons);
 
       } catch (error){
-        console.log('Ошибка при получении вопроса: ', error);
+        console.log('Произошла ошиибка в файле quiz.js: ', error);
         return bot.sendMessage(chatId, 'Произошла ошибка при получении вопроса. Попробуйте еще раз.');
       }
     }

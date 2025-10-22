@@ -8,14 +8,14 @@ module.exports = (bot, pool) => {
       const userId = msg.from.id;
 
       if (isAdmin(userId)){
-        bot.sendMessage(chatId, 'Введите ID вопроса, которые хотите удалить:')
-        userState[userId]= 'awaiting_remove-question';
+        bot.sendMessage(chatId, 'Введите ID вопроса, которые хотите удалить:\n\nДля отмены удаления вопроса введите /cancel')
+        userState[userId]= 'awaiting_remove_question';
 
       }else{
         return bot.sendMessage(chatId, 'У вас не достаточно прав для использования этой команды.');
       }
     } catch (error){
-      console.log('Ошибка в файле /remove_question:', error);
+      console.log('Ошибка в файле remove_question.js:', error);
       return bot.sendMessage(chatId, 'Произошла ошибка при вводе команды /remove_question.');
     }
   })
