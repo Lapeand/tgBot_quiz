@@ -4,11 +4,12 @@ const userState = require('../otherFeature/userState')
 module.exports = (bot) => {
   bot.onText(/\/cancel/, (msg) => {
     try{
-      const chatId = msg.from.id;
+      const chatId = msg.chat.id;
+      const userId = msg.from.id;
 
-      if (isAdmin(chatId)){
+      if (isAdmin(userId)){
         bot.sendMessage(chatId, "Вы отменили текущее действие")
-        userState[chatId] = undefined;
+        delete userState[userId];
         return
       } else{
         bot.sendMessage(chatId, "У вас не достаточно прав для использования этой команды.")

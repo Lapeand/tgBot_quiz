@@ -12,7 +12,6 @@ async function startBot() {
 
     // Заранее инициализрую базу данных
     await initDatabase();
-    console.log('База данных успешно инициализирована');
 
     // Создание бота
     const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true});
@@ -24,6 +23,7 @@ async function startBot() {
 
     //Импортирую команды для админа
     require('./bot/commands/add_question')(bot);
+    require('./bot/commands/remove_question')(bot);
     require('./bot/commands/cancel')(bot);
     
     //Импортирую обработчики
@@ -31,8 +31,8 @@ async function startBot() {
     require('./bot/handlers/answerMessage')(bot, pool);
     
     //Импортирую другие фичи/вспомогательные вещи
-    require('./bot/otherFeature/admin'); //потом проверить надо ли добавить (bot)
-    require('./bot/otherFeature/userState'); //потом проверить надо ли добавить (bot)
+    require('./bot/otherFeature/admin');
+    require('./bot/otherFeature/userState');
     
     //Сообщение о запуске
     console.log('Бот запущен...');

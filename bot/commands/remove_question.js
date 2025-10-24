@@ -8,8 +8,8 @@ module.exports = (bot, pool) => {
       const userId = msg.from.id;
 
       if (isAdmin(userId)){
-        bot.sendMessage(chatId, 'Введите ID вопроса, которые хотите удалить:\n\nДля отмены удаления вопроса введите /cancel')
-        userState[userId]= 'awaiting_remove_question';
+        bot.sendMessage(chatId, 'Список вопрос с их id(номером):\n\nДля отмены удаления вопроса введите /cancel')
+        userState[userId] = {state: 'awaiting_remove_question'};
 
       }else{
         return bot.sendMessage(chatId, 'У вас не достаточно прав для использования этой команды.');

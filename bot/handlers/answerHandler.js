@@ -1,4 +1,5 @@
-const {getQuestion} = require('../commands/quiz')
+const getQuestion = require('../commands/quiz')
+const userState = require('../otherFeature/userState')
 
 module.exports = (bot, pool) =>  {
   bot.on('callback_query', async (callbackQuery) => {
@@ -7,6 +8,9 @@ module.exports = (bot, pool) =>  {
     const chatId = msg.chat.id;
     const userId = callbackQuery.from.id;
 
+
+
+    //реагирование на кнопки которые начинаются на button_
     if (data.startsWith('button_')){
       const selectedOptionIndex = parseInt(callbackQuery.data.replace('button_', ''), 10) - 1;
 
@@ -50,6 +54,8 @@ module.exports = (bot, pool) =>  {
       }
     }
 
+
+
     // обработка продолжения и заверешния викторины
     else if (data.startsWith('quiz_')){
       if (callbackQuery.data === 'quiz_continue'){
@@ -58,7 +64,36 @@ module.exports = (bot, pool) =>  {
       if (callbackQuery.data === 'quiz_end'){
         return bot.sendMessage(chatId, 'Викторина завершена.')
       }
-  }
+    }
+
+
+
+    else if (data.startsWith('add')){  
+      try{
+        if (callbackQuery.data === 'add_question_confirm' && userState[userId] && userState[userId].state === 'awaiting_confirmation'){
+        //инициализурю параметры вопроса и добавляю вопрос в таблицу
+        const { question, options, correctAnswer } = userState[userId];
+        await pool.query('INSERT INTO questions (question_text, options, answer) VALUES ($1, $2, $3)', [question, JSON.stringify(options), correctAnswer]);
+
+        //после добавления вопроса нужно очитсить userState
+        delete userState[userId];
+
+        bot.sendMessage(chatId, 'Вопрос успешно добавлен');
+      }
+
+      if (callbackQuery.data === 'add_question_cancel' && userState[userId] && userState[userId].state === 'awaiting_confirmation'){
+        delete userState[userId];
+        return bot.sendMessage(chatId, 'Вы отменили создание вопроса. Чтоба начать заново создавать вопрос введите /add_question');
+      }
+      }catch (error){
+        console.error('Произошла ошибка при создании вопроса в файле answerHandler.js: ', error);
+        bot.sendMessage(chatId, 'Произошла ошибка при создании вопроса')
+      }
+    }
+
+
+
+    
   })
 }
 
